@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %} Jou boekingen {% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <tr>
+            <th>Jou boekingen</th>
+        </tr>
+        <!-- We kunnen het plain doen, of dynamisch in laden vannuit de database. -->
+        {% for reservation in reservation_data %}
+            <tr>
+                <td>{{ reservation.date }}</td>
+                <td>{{ reservation.bungalow }}</td>
+                <td>{{ reservation.usedCapacity }}/{{ reservation.totalCapacity }}</td>
+            </tr>
+        {% endfor %}
+    </div>
+{% endblock %}

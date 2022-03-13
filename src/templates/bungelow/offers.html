@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %} Bungelows {% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <tr>
+            <th>Bungalows</th>
+        </tr>
+        <!-- We kunnen het plain doen, of dynamisch in laden vannuit de database. -->
+        {% for bungalow in bungalow_data %}
+            <tr>
+                <td>{{ bungalow.name }}</td>
+                <td>{{ bungalow.totalCapacity }}</td>
+                <td>{{ bungalow.price }}</td>
+                <td>{{ bungalow.isAvailable }}</td>
+            </tr>
+        {% endfor %}
+    </div>
+{% endblock %}
