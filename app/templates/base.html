@@ -14,18 +14,8 @@
     <body>
 
         <ul class="nav">
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('root.home') }}">Home</a></li>
-            <li class="nav-link"><a href="{{ url_for('bungelow.offers') }}">Bungelows</a></li>
-
-            {% if current_user.is_authenticated %}
-                <li class="nav-link"><a href="{{ url_for('visitor.reservations') }}">Jou boekingen</a></li>
-                <li class="nav-link"><a href="{{ url_for('root.logout') }}">Uitloggen</a></li>
-
-            {% else %}
-                <li class="nav-link"><a href="{{ url_for('visitor.sign_up') }}">Aanmelden</a></li>
-                <li class="nav-link"><a href="{{ url_for('visitor.login') }}">Inloggen</a></li>
-
-            {% endif %}
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{url_for('bungalows.offers')}}">Bungalows</a></li>
 
         </ul>
 
