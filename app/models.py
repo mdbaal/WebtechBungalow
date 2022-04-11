@@ -1,44 +1,68 @@
-from ast import In
-from enum import unique
-import app.db as db
+from app import db, login_manager
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
 
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
 
-class Bungalow_Type(db.base):
-    __tablename__ = 'bungalow_types'
-    id = Column(Integer,primary_key=True)
+class Bungalow_Type(db.Model):
+    __tablename__ = 'bungalow_type'
+    id = Column(Integer, primary_key=True)
     size = Column(Integer)
     week_price = Column(Integer)
 
-class Bungalow(db.base):
-    __tablename__ = 'bungalows'
-    id = Column(Integer,primary_key=True)
-    naam = Column(String)
-    type = Column(Integer, ForeignKey('bungalow_types.id'))
-    user = relationship("Bungalow_Type", back_populates="bungalows")
+    def __init__(self, size, week_price):
+        self.size = size
+        self.week_price = week_price
 
-    def __init__(self, naam,type):
-        self.naam = naam
+    def _repr__(self):
+        return f"Id: {self.id} Size: {self.size} Week-Price: {self.week_price}"
+
+class Bungalow(db.Model):
+    __tablename__ = 'bungalow'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    type = Column(Integer, ForeignKey('bungalow_type.id'))
+
+    def __init__(self, name, type):
+        self.name = name
         self.type = type
-
 
     def _repr__(self):
         return f"Bungalow: {self.naam} Type: {self.type}"
 
 
-class Guest(db.base):
-    __tablename__ = "guests"
-    id = Column(Integer,primary_key=True)
-    gebruikersnaam = Column(String, unique=True)
-    wachtwoord = Column(String, unique=True)
-
-
-class Boeking(db.base):
-    __tablename__ = "bookings"
+class Guest(db.Model, UserMixin):
+    __tablename__ = "guest"
     id = Column(Integer, primary_key=True)
-    guest_id = Column(Integer, ForeignKey('guests.id'))
-    start_week = Column(Integer)
+    name = Column(String, unique=True)
+    password = Column(String, unique=True)
+
+    def __init__(self, name, password):
+        self.name = name
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return Guest.query.get(user_id)
+
+    def _repr__(self):
+        return f"Guest: {self.id} Name: {self.name}"
 
 
-# ! todo add innit and repr to other models
+class Reservation(db.Model):
+    __tablename__ = "reservation"
+    id = Column(Integer, primary_key=True)
+    guest = Column(Integer, ForeignKey('guest.id'))
+    bungalow = Column(Integer, ForeignKey('bungalow.id'))
+    week = Column(Integer)
+
+    def __init__(self, guest, bungalow, week):
+        self.guest = guest
+        self.bungalow = bungalow
+        self.week = week
+
+    def _repr__(self):
+        return f"Reservation: {self.id} Guest: {self.guest} Bungalow: {self.bungalow} Week: {self.week}"

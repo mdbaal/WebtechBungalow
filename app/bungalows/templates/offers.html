@@ -3,17 +3,16 @@
 
 {% block content %}
     <div class="jumbotron">
-        <tr>
-            <th>Bungalows</th>
-        </tr>
-        <!-- We kunnen het plain doen, of dynamisch in laden vannuit de database. -->
+
+        <h1>Bungalows</h1>
+        
         {% for bungalow in bungalow_data %}
-            <tr>
-                <td>{{ bungalow.name }}</td>
-                <td>{{ bungalow.totalCapacity }}</td>
-                <td>{{ bungalow.price }}</td>
-                <td>{{ bungalow.isAvailable }}</td>
-            </tr>
+        <div class="card">
+            Name: {{ bungalow.name }} <br>
+            Size: {{ bungalow.capacity }} <br>
+            Price: {{ bungalow.price }} <br>
+            <a href="{{url_for('bungalows.reserve', bungalow_id=bungalow.id)}}" class="btn btn-primary">Make reservation now!</a>
+        </div>
         {% endfor %}
     </div>
 {% endblock %}

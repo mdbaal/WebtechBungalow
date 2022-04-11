@@ -8,6 +8,9 @@ ecdsa==0.17.0
 esptool==3.3
 Flask==2.0.3
 Flask-SQLAlchemy==2.5.1
+Flask-WTF==0.14.3
+Flask-Login==0.5.0
+WTForms~=2.3.3
 greenlet==1.1.2
 huas-micropython==0.0.2
 itsdangerous==2.1.0

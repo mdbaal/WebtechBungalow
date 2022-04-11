@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %} Bungelow {{ bungalow_data.name }} {% endblock %}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="card">
+            Bungalow: {{ bungalow_data.name }} <br>
+            Size: {{ bungalow_data.capacity }} <br>
+            Price: {{ bungalow_data.price }} <br>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                {{ form.week_nr.label }}: {{ form.week_nr() }} <br>
+                {{ form.submit() }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

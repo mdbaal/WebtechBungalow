@@ -3,4 +3,12 @@
 
 {% block content %}
     <h1>Aanmelden</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.username.label }} {{ form.username() }}<br>
+        {{ form.password.label }} {{ form.password() }}<br>
+        {{ form.pass_confirm.label }} {{ form.pass_confirm() }}<br>
+        {{ form.submit() }}
+    </form>
+    Al een gebruikersnaam? <a href="{{url_for('visitor.login', next = request.args.get('next'))}}" class="btn btn-primary">Login!</a>
 {% endblock %}

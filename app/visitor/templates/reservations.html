@@ -3,16 +3,14 @@
 
 {% block content %}
     <div class="jumbotron">
-        <tr>
-            <th>Jou boekingen</th>
-        </tr>
-        <!-- We kunnen het plain doen, of dynamisch in laden vannuit de database. -->
+
+        <h1>Jou boekingen</h1>
+
         {% for reservation in reservation_data %}
-            <tr>
-                <td>{{ reservation.date }}</td>
-                <td>{{ reservation.bungalow }}</td>
-                <td>{{ reservation.usedCapacity }}/{{ reservation.totalCapacity }}</td>
-            </tr>
+            <div class="card">
+                Week: {{ reservation.week }} <br>
+                Bungalow: {{ reservation.bungalow }}
+            </div>
         {% endfor %}
     </div>
 {% endblock %}
