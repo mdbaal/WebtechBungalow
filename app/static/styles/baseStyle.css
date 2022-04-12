@@ -1,0 +1,12 @@
+body {
+    background: #e9ecef;
+}
+
+.header {
+    height: 60vh;
+    min-height: 40vh;
+    background-image: url('../images/bos-duin.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}

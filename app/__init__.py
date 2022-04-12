@@ -51,7 +51,3 @@ def before_first_request_func():
 
     # Save to the database
     db.session.commit()
-
-    # Checken of de ID's zijn toegevoegd.
-    print(Bungalow_Type.query.all())
-    print(Bungalow.query.all())
