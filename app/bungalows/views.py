@@ -1,9 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import current_user
-from app import db
+from app import db, app
 from app.models import Bungalow, Bungalow_Type, Reservation
 from app.bungalows.forms import ReserveForm
 from datetime import date
+import os
 
 bp_bungalows = Blueprint(
     'bungalows',
@@ -21,7 +22,6 @@ def offers():
 @bp_bungalows.route("/reserve", methods=['GET', 'POST'])
 def reserve():
     bungalow_id = request.args.get('bungalow_id')
-    print(bungalow_id)
     if not bungalow_id or bungalow_id == -1:
         flash('Selecteer alstublieft een bungalow')
         return redirect(url_for('.offers'))
@@ -30,15 +30,18 @@ def reserve():
     if not current_user.is_authenticated:
        return redirect(url_for('visitor.register', next=request.url))
 
-    data = db.session.query(Bungalow.name.label('name'), Bungalow_Type.size.label('capacity'), Bungalow_Type.week_price.label('price')).\
+    data = db.session.query(Bungalow.name.label('name'), Bungalow_Type.size.label('capacity'), Bungalow_Type.week_price.label('price'), Bungalow.gallery.label('gallery')).\
         join(Bungalow_Type, Bungalow_Type.id == Bungalow.type).\
         filter(Bungalow.id == bungalow_id).\
         first()
-    print(data)
+
+    images = os.listdir(os.path.join(app.root_path, 'static', 'images', 'bungalows', data["gallery"]))
+    images = [f'images/bungalows/{data["gallery"]}/' + file for file in images]
+
     form = ReserveForm()
 
     current_week = date.today().isocalendar().week
-    available_weeks = [current_week + i + 1 for i in range(5)] #Get all week numbers of 5 weeks ahead except this week.
+    available_weeks = [current_week + i + 1 for i in range(5)] #Get all week numbers of 5 weeks ahead after this week.
     for reservation in Reservation.query.filter_by(bungalow=bungalow_id).all():
         try:
             available_weeks.remove(reservation.week) #Remove weeks that already have a reservation for this bungalow.
@@ -57,4 +60,4 @@ def reserve():
 
         flash('Succesvol gereserveerd!')
         return redirect(url_for('visitor.reservations'))
-    return render_template('offerInfo.html', form=form, bungalow_data=data)
+    return render_template('offerInfo.html', form=form, bungalow_data=data, images=images)

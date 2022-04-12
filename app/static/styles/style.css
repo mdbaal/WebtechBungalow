@@ -6,3 +6,8 @@
 .card {
     margin-bottom: 1rem;
 }
+
+.gallery-img {
+    max-width: 300px;
+    max-height: 300px;
+}

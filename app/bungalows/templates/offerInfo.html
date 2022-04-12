@@ -3,6 +3,9 @@
 
 {% block content %}
     <div class="jumbotron">
+        {% for image in images %}
+            <img src="{{url_for('static', filename=image)}}" alt="{{image}}" class="gallery-img">
+        {% endfor %}
         <div class="card">
             Bungalow: {{ bungalow_data.name }} <br>
             Size: {{ bungalow_data.capacity }} <br>

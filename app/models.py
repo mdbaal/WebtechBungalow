@@ -21,14 +21,16 @@ class Bungalow(db.Model):
     __tablename__ = 'bungalow'
     id = Column(Integer, primary_key=True)
     name = Column(String)
+    gallery = Column(String)
     type = Column(Integer, ForeignKey('bungalow_type.id'))
 
-    def __init__(self, name, type):
+    def __init__(self, name, type, gallery):
         self.name = name
         self.type = type
+        self.gallery = gallery
 
     def _repr__(self):
-        return f"Bungalow: {self.naam} Type: {self.type}"
+        return f"Bungalow: {self.naam} Type: {self.type} Gallery: {self.gallery}"
 
 
 class Guest(db.Model, UserMixin):
