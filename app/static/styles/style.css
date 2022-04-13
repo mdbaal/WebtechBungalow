@@ -6,14 +6,44 @@
 
 .card {
     border-bottom: 1px solid gray;
-    width: 100%;
-}
-
-.card {
+    width: 40%;
+    padding:10px;
     margin-bottom: 1rem;
 }
+
 
 .gallery-img {
     max-width: 300px;
     max-height: 300px;
+    margin-right: 10px;
+    border:1px solid #e1e1e1;
+    border-radius: 3px;
+    margin-bottom: 40px;
+    box-shadow: 3px 5px 5px 5px rgba(0,0,0,.3);
+    transition: transform .5s,margin .5s;
+}
+
+.gallery-img:hover {
+   transform: scale(1.2);
+   margin-right: 50px;
+    
+}
+
+.btn.btn-primary{
+    width:200px;
+    margin: 10px 0
+}
+
+input{
+    border-radius:3px;
+    border: 1px solid #e1e1e1;
+    padding: 5px;
+    margin: 0 5px;
+
+}
+
+input#submit{
+    background-color: #007bff;
+    color:white;
+    padding: 5px 10px;
 }
