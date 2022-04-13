@@ -26,20 +26,22 @@ def reservations():
 @login_required
 def logout():
     logout_user()
-    flash('Je bent nu uitgelogd!')
+    flash('Je bent nu uitgelogd!', 'info')
     return redirect(url_for('root.index'))
 
 @bp_visitor.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        form.check_username(form.username)
+        if not form.check_username(form.username):
+            flash('Deze gebruikersnaam is al vergeven, probeer een ander naam!', 'error')
+            return render_template('register.html', form=form)
 
         visitor = Guest(name=form.username.data, password=form.password.data)
 
         db.session.add(visitor)
         db.session.commit()
-        flash('Dank voor de registratie. Er kan nu ingelogd worden! ')
+        flash('Dank voor de registratie. Er kan nu ingelogd worden!', 'success')
 
         next = request.args.get('next')
 
@@ -53,11 +55,11 @@ def login():
         user = Guest.query.filter_by(name=form.username.data).first()
         if user is not None and user.check_password(form.password.data):
             login_user(user)
-            flash('Succesvol ingelogd.')
+            flash('Succesvol ingelogd.', 'success')
 
             next = request.args.get('next')
 
             return redirect(next or url_for('root.index'))
         else:
-            flash('Inlog ongeldig.')
+            flash('Inlog ongeldig.', 'error')
     return render_template('login.html', form=form)

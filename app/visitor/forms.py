@@ -1,7 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, EqualTo
-from wtforms import ValidationError
 
 from app.models import Guest
 
@@ -12,8 +11,7 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Verzenden!')
 
     def check_username(self, field):
-        if Guest.query.filter_by(name=field.data).first():
-            raise ValidationError('Deze gebruikersnaam is al vergeven, probeer een ander naam!')
+        return not Guest.query.filter_by(name=field.data).first()
 
 class LoginForm(FlaskForm):
     username = StringField('Gebruikersnaam', validators=[DataRequired()])
