@@ -6,11 +6,16 @@
 
         <h1>Jou boekingen</h1>
 
-        {% for reservation in reservation_data %}
-            <div class="card">
-                Week: {{ reservation.week }} <br>
-                Bungalow: {{ reservation.bungalow }}
-            </div>
-        {% endfor %}
+        {% if reservation_data %}
+            {% for reservation in reservation_data %}
+                <div class="card">
+                    <h3>{{ reservation.name }} </h3>
+                    Week: {{ reservation.week }} <br>
+                    Personen: {{ reservation.capacity }}
+                </div>
+            {% endfor %}
+        {% else %}
+            <h5>U heeft nog geen boekingen</h5>
+        {% endif %}
     </div>
 {% endblock %}

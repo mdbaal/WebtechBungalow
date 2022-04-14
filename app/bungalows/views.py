@@ -23,7 +23,7 @@ def offers():
 def reserve():
     bungalow_id = request.args.get('bungalow_id')
     if not bungalow_id or bungalow_id == -1:
-        flash('Selecteer alstublieft een bungalow')
+        flash('Selecteer alstublieft een bungalow', 'danger')
         return redirect(url_for('.offers'))
 
     #if no signed-in user is found. Make the user register first.
@@ -58,6 +58,6 @@ def reserve():
         db.session.add(reservation)
         db.session.commit()
 
-        flash('Succesvol gereserveerd!')
+        flash('Succesvol gereserveerd!', 'success')
         return redirect(url_for('visitor.reservations'))
     return render_template('offerInfo.html', form=form, bungalow_data=data, images=images)

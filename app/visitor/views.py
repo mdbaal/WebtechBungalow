@@ -5,7 +5,7 @@ from app import login_manager
 
 from app import db
 from app.visitor.forms import RegistrationForm, LoginForm
-from app.models import Guest, Reservation
+from app.models import Guest, Reservation, Bungalow, Bungalow_Type
 
 from datetime import date
 
@@ -19,7 +19,12 @@ bp_visitor = Blueprint(
 @bp_visitor.route("/reservations")
 @login_required
 def reservations():
-    data = Reservation.query.filter_by(guest=current_user.id).order_by(Reservation.week.asc(), Reservation.bungalow.asc()).all()
+    data = db.session.query(Reservation.week.label('week'), Bungalow.name.label('name'), Bungalow_Type.size.label('capacity')).\
+        join(Bungalow, Bungalow.id == Reservation.bungalow).\
+        join(Bungalow_Type, Bungalow_Type.id == Bungalow.type).\
+        filter(Reservation.guest == current_user.id).\
+        order_by(Reservation.week.asc(), Reservation.bungalow.asc()).\
+        all()
     return render_template("reservations.html", reservation_data = data)
 
 @bp_visitor.route('/logout')
@@ -33,8 +38,11 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        if not form.check_username(form.username):
-            flash('Deze gebruikersnaam is al vergeven, probeer een ander naam!', 'error')
+        if not form.check_username():
+            flash('Deze gebruikersnaam is al vergeven, probeer een ander naam!', 'danger')
+            return render_template('register.html', form=form)
+        if not form.check_password():
+            flash('Uw bevestigingswachtwoord komt niet overeen met uw opgegeven wachtwoord!', 'danger')
             return render_template('register.html', form=form)
 
         visitor = Guest(name=form.username.data, password=form.password.data)
@@ -61,5 +69,5 @@ def login():
 
             return redirect(next or url_for('root.index'))
         else:
-            flash('Inlog ongeldig.', 'error')
+            flash('Inlog ongeldig.', 'danger')
     return render_template('login.html', form=form)

@@ -7,12 +7,12 @@
         <h1>Bungalows</h1>
         
         {% for bungalow in bungalow_data %}
-        <div class="card">
-            Name: {{ bungalow.name }} <br>
-            Size: {{ bungalow.capacity }} <br>
-            Price: {{ bungalow.price }} <br>
-            <a href="{{url_for('bungalows.reserve', bungalow_id=bungalow.id)}}" class="btn btn-primary">Reserveer nu!</a>
-        </div>
+            <div class="card">
+                <h3>{{ bungalow.name }} </h3>
+                Personen: {{ bungalow.capacity }} <br>
+                Prijs: {{ bungalow.price }} euro per week <br>
+                <a href="{{url_for('bungalows.reserve', bungalow_id=bungalow.id)}}" class="btn btn-primary">Reserveer nu!</a>
+            </div>
         {% endfor %}
     </div>
 {% endblock %}
